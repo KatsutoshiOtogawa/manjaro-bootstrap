@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# arch-bootstrap: Bootstrap a base Arch Linux system using any GNU distribution.
+# manjaro-bootstrap: Bootstrap Manjaro Linux system using any GNU distribution.
 #
 # Dependencies: bash >= 4, coreutils, wget, sed, gawk, tar, gzip, chroot, xz, zstd.
 # Project: https://github.com/tokland/arch-bootstrap
@@ -11,8 +11,8 @@
 #
 # Usage:
 #
-#   # arch-bootstrap destination
-#   # arch-bootstrap -a x86_64 -r ftp://ftp.archlinux.org destination-64
+#   # manjaro-bootstrap destination
+#   # manjaro-bootstrap -a x86_64 -r ftp://ftp.archlinux.org destination-64
 #
 # And then you can chroot to the destination directory (user: root, password: root):
 #
@@ -23,7 +23,7 @@ set -e -u -o pipefail
 # Packages needed by pacman (see get-pacman-dependencies.sh)
 PACMAN_PACKAGES=(
   acl archlinux-keyring attr brotli bzip2 curl expat glibc gpgme libarchive
-  libassuan libgpg-error libnghttp2 libssh2 lzo openssl pacman pacman-mirrorlist xz zlib
+  libassuan libgpg-error libnghttp2 libssh2 lzo openssl pacman pacman-mirrors xz zlib
   krb5 e2fsprogs keyutils libidn2 libunistring gcc-libs lz4 libpsl icu libunistring zstd
 )
 BASIC_PACKAGES=(${PACMAN_PACKAGES[*]} filesystem)
@@ -89,7 +89,7 @@ get_core_repo_url() {
   if [[ "$ARCH" == arm* || "$ARCH" == aarch64 ]]; then
     echo "${REPO_URL%/}/$ARCH/core"
   else
-    echo "${REPO_URL%/}/core/os/$ARCH"
+    echo "${REPO_URL%/}/stable/core/$ARCH"
   fi
 }
 
@@ -98,7 +98,7 @@ get_template_repo_url() {
   if [[ "$ARCH" == arm* || "$ARCH" == aarch64 ]]; then
     echo "${REPO_URL%/}/$ARCH/\$repo"
   else
-    echo "${REPO_URL%/}/\$repo/os/$ARCH"
+    echo "${REPO_URL%/}/stable/\$repo/$ARCH"
   fi
 }
 
