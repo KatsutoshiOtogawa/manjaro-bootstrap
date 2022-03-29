@@ -7,12 +7,13 @@
 #
 # Install:
 #
-#   # install -m 755 arch-bootstrap.sh /usr/local/bin/arch-bootstrap
+#   $ wget 
+#   # install -m 755 manjaro-bootstrap.sh /usr/local/bin/manjaro-bootstrap
 #
 # Usage:
 #
 #   # manjaro-bootstrap destination
-#   # manjaro-bootstrap -a x86_64 -r ftp://ftp.archlinux.org destination-64
+#   # manjaro-bootstrap -a x86_64 -r https://mirrors.ocf.berkeley.edu/manjaro/ destination-64
 #
 # And then you can chroot to the destination directory (user: root, password: root):
 #
@@ -28,8 +29,8 @@ PACMAN_PACKAGES=(
 )
 BASIC_PACKAGES=(${PACMAN_PACKAGES[*]} filesystem)
 EXTRA_PACKAGES=(coreutils bash grep gawk file tar systemd sed)
-DEFAULT_REPO_URL="http://mirrors.kernel.org/archlinux"
-DEFAULT_ARM_REPO_URL="http://mirror.archlinuxarm.org"
+DEFAULT_REPO_URL="https://mirrors.ocf.berkeley.edu/manjaro/"
+DEFAULT_ARM_REPO_URL="https://mirrors.ocf.berkeley.edu/manjaro/"
 
 stderr() { 
   echo "$@" >&2 
@@ -87,7 +88,7 @@ get_default_repo() {
 get_core_repo_url() {
   local REPO_URL=$1 ARCH=$2
   if [[ "$ARCH" == arm* || "$ARCH" == aarch64 ]]; then
-    echo "${REPO_URL%/}/$ARCH/core"
+    echo "${REPO_URL%/}/arm-stable/core/aarch64"
   else
     echo "${REPO_URL%/}/stable/core/$ARCH"
   fi
@@ -96,7 +97,7 @@ get_core_repo_url() {
 get_template_repo_url() {
   local REPO_URL=$1 ARCH=$2
   if [[ "$ARCH" == arm* || "$ARCH" == aarch64 ]]; then
-    echo "${REPO_URL%/}/$ARCH/\$repo"
+    echo "${REPO_URL%/}/arm-stable/\$repo/aarch64"
   else
     echo "${REPO_URL%/}/stable/\$repo/$ARCH"
   fi
