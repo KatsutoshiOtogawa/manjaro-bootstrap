@@ -3,7 +3,7 @@
 # manjaro-bootstrap: Bootstrap Manjaro Linux system using any GNU distribution.
 #
 # Dependencies: bash >= 4, coreutils, wget, sed, gawk, tar, gzip, chroot, xz, zstd.
-# Project: https://github.com/tokland/arch-bootstrap
+# Project: https://github.com/KatsutoshiOtogawa/manjaro-bootstrap
 #
 # Install:
 #
@@ -173,6 +173,25 @@ show_usage() {
   stderr "Usage: $(basename "$0") [-q] [-a i686|x86_64|arm] [-r REPO_URL] [-d DOWNLOAD_DIR] DESTDIR"
 }
 
+show_usage() {
+    cat 1>&2 <<EOF
+manjaro-bootstrap
+Bootstrap Manjaro Linux system using any GNU distribution.
+
+USAGE:
+    manjaro-bootstrap [-h] [-q] [-a x86_64|arm] [-r REPO_URL] [-d DOWNLOAD_DIR] DESTDIR
+
+FLAGS:
+    -h                      Prints help information
+    -q                      use qemu flag.
+
+OPTIONS:
+    -a                      machine cpu arcitecture. x86_64 or arm
+    -r                      repository mirror url you use.
+    -d                      download dir for install temp directory
+EOF
+}
+
 main() {
   # Process arguments and options
   test $# -eq 0 && set -- "-h"
@@ -189,6 +208,7 @@ main() {
       q) USE_QEMU=true;;
       d) DOWNLOAD_DIR=$OPTARG
          PRESERVE_DOWNLOAD_DIR=true;;
+      h) show_usage; return 1;;
       *) show_usage; return 1;;
     esac
   done
